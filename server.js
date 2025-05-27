@@ -53,6 +53,7 @@ app.post('/send-chat-form', async (req, res) => {
 });
 
 // Start the server
+// Make sure to replace the port with your desired port number
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
