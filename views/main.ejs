@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בקרה תקציבית בפרויקטי נדל"ן: מדריך אינטראקטיבי</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices:
+        - Report Info: Importance of Budget Control (Sec I) -> Goal: Inform -> Viz/Presentation: Clickable cards for key reasons -> Interaction: Click to reveal text -> Justification: Concise, engaging way to present core benefits -> Library/Method: HTML/CSS/JS.
+        - Report Info: Controller's Role across Project Lifecycle (Sec II.B) -> Goal: Organize/Inform -> Viz/Presentation: Interactive horizontal timeline -> Interaction: Click phase to see responsibilities -> Justification: Visualizes process flow effectively -> Library/Method: HTML/CSS/JS.
+        - Report Info: Key Responsibilities (Sec II.A) -> Goal: Inform -> Viz/Presentation: Grid of clickable icon/cards -> Interaction: Click to reveal details -> Justification: Easy to scan and dive into specific roles -> Library/Method: HTML/CSS/JS.
+        - Report Info: Types of Information Collected (Sec III.A) -> Goal: Organize/Inform -> Viz/Presentation: Tabs or accordion -> Interaction: Click to switch/expand -> Justification: Organizes diverse data types clearly -> Library/Method: HTML/CSS/JS.
+        - Report Info: Information Sources (Sec III.B) -> Goal: Inform/Relationships -> Viz/Presentation: HTML/CSS diagram -> Interaction: Static visual -> Justification: Simple visual representation of data flow -> Library/Method: HTML/CSS.
+        - Report Info: Single Source of Truth (Sec III.D) -> Goal: Inform -> Viz/Presentation: HTML/CSS conceptual diagram -> Interaction: Static visual -> Justification: Clarifies a key concept visually -> Library/Method: HTML/CSS.
+        - Report Info: KPIs (Sec IV.A) -> Goal: Inform/Compare -> Viz/Presentation: Illustrative Donut/Bar charts (e.g., Budget Utilization, Cost Variance) -> Interaction: Hover for tooltips (Chart.js default) -> Justification: Demonstrates typical metrics visually. Data is conceptual. -> Library/Method: Chart.js (Canvas).
+        - Report Info: Types of Reports (Sec IV.B) -> Goal: Inform -> Viz/Presentation: Clickable cards -> Interaction: Click to reveal purpose -> Justification: Easy to understand different report functions -> Library/Method: HTML/CSS/JS.
+        - Report Info: Analytical Methodologies (Sec V.A) -> Goal: Inform -> Viz/Presentation: Accordion/tabs -> Interaction: Click to expand/switch -> Justification: Presents complex methods in a structured way -> Library/Method: HTML/CSS/JS.
+        - Report Info: Challenges and Solutions (Sec V.C) -> Goal: Compare/Inform -> Viz/Presentation: Two-column layout or interactive cards -> Interaction: Static or click to flip -> Justification: Clear comparison of problems and remedies -> Library/Method: HTML/CSS/JS.
+        CONFIRMING NO SVG/Mermaid. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; /* bg-slate-50 */ color: #1e293b; /* text-slate-800 */ }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        html { scroll-behavior: smooth; }
+        .nav-link { padding: 0.5rem 1rem; border-bottom: 2px solid transparent; transition: all 0.3s ease; }
+        .nav-link.active-nav { color: #2563eb; /* blue-600 */ font-weight: 600; border-bottom-color: #2563eb; }
+        .content-section { min-height: 90vh; padding-top: 5rem; /* Adjust based on header height */ }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; max-height: 400px;} }
+        .interactive-card header, .accordion-header { cursor: pointer; user-select: none; }
+        .hidden-content { display: none; }
+        .timeline-item-content.hidden-content { display: none; }
+        .timeline-nav-item.active { background-color: #3b82f6; color: white; }
+        .tab-button.active { border-color: #2563eb; color: #2563eb; background-color: #eff6ff; }
+        .icon-placeholder { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .card { background-color: white; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); padding: 1.5rem; transition: all 0.3s ease; }
+        .card:hover { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
+        .card-title { font-size: 1.25rem; font-weight: 600; color: #1e3a8a; /* blue-800 */ margin-bottom: 0.75rem; }
+        .card-content p { margin-bottom: 0.5rem; line-height: 1.6; }
+        .btn { padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 500; transition: background-color 0.3s ease; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .btn-secondary { background-color: #e2e8f0; color: #1e293b; }
+        .btn-secondary:hover { background-color: #cbd5e1; }
+        h2 { font-size: 2rem; font-weight: 700; color: #1e3a8a; margin-bottom: 1.5rem; border-bottom: 2px solid #93c5fd; padding-bottom: 0.5rem;}
+        h3 { font-size: 1.5rem; font-weight: 600; color: #1e40af; margin-top: 1.5rem; margin-bottom: 1rem; }
+        ul { list-style-position: inside; margin-bottom: 1rem; }
+        li { margin-bottom: 0.25rem; }
+
+        /* Chat button and modal specific styles */
+        .chat-button-container {
+            position: fixed;
+            bottom: 1.5rem; /* 24px */
+            right: 1.5rem; /* 24px */
+            z-index: 1000;
+        }
+        .chat-button {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+            border-radius: 9999px; /* full rounded */
+            padding: 1rem; /* 16px */
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.5rem; /* 56px */
+            height: 3.5rem; /* 56px */
+        }
+        .chat-button:hover {
+            background-color: #1d4ed8; /* blue-700 */
+        }
+        .chat-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+        .chat-modal-content {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 2rem; /* 32px */
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        .chat-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b; /* slate-500 */
+        }
+        .chat-modal-close:hover {
+            color: #1e293b; /* slate-800 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl sm:text-2xl font-bold text-blue-700">בקרה תקציבית בפרויקטי נדל"ן</h1>
+                </div>
+                <nav class="hidden md:flex space-x-4 space-x-reverse">
+                    <a href="#introduction" class="nav-link">מבוא</a>
+                    <a href="#controller-role" class="nav-link">תפקיד הבקר</a>
+                    <a href="#information-management" class="nav-link">ניהול מידע</a>
+                    <a href="#metrics-reports" class="nav-link">מדדים ודוחות</a>
+                    <a href="#advanced-analytics" class="nav-link">אנליטיקה</a>
+                    <a href="#conclusions" class="nav-link">סיכום</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-slate-500 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
+            <a href="#introduction" class="block py-2 px-4 text-sm hover:bg-slate-100 nav-link-mobile">מבוא</a>
+            <a href="#controller-role" class="block py-2 px-4 text-sm hover:bg-slate-100 nav-link-mobile">תפקיד הבקר</a>
+            <a href="#information-management" class="block py-2 px-4 text-sm hover:bg-slate-100 nav-link-mobile">ניהול מידע</a>
+            <a href="#metrics-reports" class="block py-2 px-4 text-sm hover:bg-slate-100 nav-link-mobile">מדדים ודוחות</a>
+            <a href="#advanced-analytics" class="block py-2 px-4 text-sm hover:bg-slate-100 nav-link-mobile">אנליטיקה</a>
+            <a href="#conclusions" class="block py-2 px-4 text-sm hover:bg-slate-100 nav-link-mobile">סיכום</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 pt-16">
+        <section id="introduction" class="content-section pt-12 pb-4">
+            <h2>I. מבוא: חשיבות הבקרה התקציבית בנדל"ן</h2>
+            <p class="text-lg mb-6 leading-relaxed">תפקיד הבקרה התקציבית בחברות נדל"ן העוסקות בביצוע פרויקטים הוא אבן יסוד בהבטחת יציבות פיננסית והצלחה ארוכת טווח. זוהי פונקציה קריטית ורב-גונית, הנוגעת בליבת האסטרטגיה העסקית ומטרתה למקסם רווחים, לנהל סיכונים ולאפשר קבלת החלטות מושכלת.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="card interactive-card" data-content-id="intro-reason-1">
+                    <header class="flex justify-between items-center">
+                        <h3 class="card-title">מדוע בקרה תקציבית קריטית?</h3>
+                        <span class="text-blue-500 text-2xl transform transition-transform duration-300">▼</span>
+                    </header>
+                    <div id="intro-reason-1" class="hidden-content card-content mt-2">
+                        <p>שוק הנדל"ן הדינמי והתנודתי מחייב ניהול פיננסי הדוק. בקרה אפקטיבית שולטת בעלויות, מבטיחה תשלומים בזמן, מונעת חריגות וממזערת סיכונים, מה שיכול לקבוע את הצלחת הפרויקט.</p>
+                    </div>
+                </div>
+                <div class="card interactive-card" data-content-id="intro-reason-2">
+                     <header class="flex justify-between items-center">
+                        <h3 class="card-title">מטרות הבקרה התקציבית</h3>
+                        <span class="text-blue-500 text-2xl transform transition-transform duration-300">▼</span>
+                    </header>
+                    <div id="intro-reason-2" class="hidden-content card-content mt-2">
+                        <p>המטרה העליונה היא ניהול פיננסי אופטימלי של הפרויקט, מקסום רווחים והבטחת כדאיות. זה כולל זיהוי מוקדם של בעיות, התאמת תוכניות, ושיפור תשואות תוך הנחת בסיס לצמיחה עתידית.</p>
+                    </div>
+                </div>
+            </div>
+             <div class="card">
+                <h3 class="card-title">הבקרה התקציבית כעמוד שדרה אסטרטגי</h3>
+                <div class="card-content">
+                    <p>בקר התקציב אינו רק עוקב אחר הוצאות; הוא שותף אסטרטגי פעיל בבניית אומדנים, זיהוי סטיות, הבטחת ציות לרגולציה, ניתוח עלויות ובדיקות כדאיות. יכולתו לספק תמונה פיננסית מדויקת ולזהות סיכונים והזדמנויות קריטית ליתרון התחרותי של החברה.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="controller-role" class="content-section py-12">
+            <h2>II. התנהלות שוטפת של תפקיד בקר התקציב</h2>
+            <p class="text-lg mb-6 leading-relaxed">ההתנהלות השוטפת של בקר התקציב היא דינמית ומשתנה בהתאם לשלב הפרויקט, אך כוללת סט קבוע של אחריות ותחומי פעילות מרכזיים, החל מתקצוב ועד ניהול סיכונים ודיווח.</p>
+
+            <h3 class="text-xl font-semibold mb-4">תחומי אחריות מרכזיים:</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="card interactive-card" data-content-id="resp-1">
+                    <header><h4 class="card-title text-lg">תקצוב פרויקטים <span class="text-blue-500 text-xl transform transition-transform duration-300">▼</span></h4></header>
+                    <div id="resp-1" class="hidden-content card-content mt-2"><p>בניית אומדנים ותקציבים מפורטים לפרויקטי בינוי (מגורים, משרדים, מסחר) תוך ירידה לפרטים הקטנים ושיתוף פעולה עם מנהל הפרויקט.</p></div>
+                </div>
+                <div class="card interactive-card" data-content-id="resp-2">
+                    <header><h4 class="card-title text-lg">מעקב ובקרה שוטפים <span class="text-blue-500 text-xl transform transition-transform duration-300">▼</span></h4></header>
+                    <div id="resp-2" class="hidden-content card-content mt-2"><p>ניהול מעקב אחר ביצוע התקציב בפועל מול התכנון, זיהוי פערים וסטיות, והפקת דוחות תקופתיים (שבועיים, דו-שבועיים, חודשיים).</p></div>
+                </div>
+                <div class="card interactive-card" data-content-id="resp-3">
+                    <header><h4 class="card-title text-lg">ניתוח עלויות וכדאיות <span class="text-blue-500 text-xl transform transition-transform duration-300">▼</span></h4></header>
+                    <div id="resp-3" class="hidden-content card-content mt-2"><p>ביצוע "דוח אפס" (בדיקת כדאיות כלכלית) בשלב מוקדם, ניתוח עלויות מפורט לאורך הפרויקט, ובדיקת כדאיות במכרזים.</p></div>
+                </div>
+                 <div class="card interactive-card" data-content-id="resp-4">
+                    <header><h4 class="card-title text-lg">הכנת תחזיות <span class="text-blue-500 text-xl transform transition-transform duration-300">▼</span></h4></header>
+                    <div id="resp-4" class="hidden-content card-content mt-2"><p>ביצוע תחזיות להערכת הכנסות והוצאות, מבוססות נתונים היסטוריים, מגמות שוק ושינויים צפויים, לתכנון פיננסי ארוך טווח.</p></div>
+                </div>
+                 <div class="card interactive-card" data-content-id="resp-5">
+                    <header><h4 class="card-title text-lg">ניהול תזרים מזומנים <span class="text-blue-500 text-xl transform transition-transform duration-300">▼</span></h4></header>
+                    <div id="resp-5" class="hidden-content card-content mt-2"><p>ניהול שוטף של תזרים מזומנים חזוי ופועל, ניטור גבייה ותשלומים, לשמירה על נזילות הפרויקט.</p></div>
+                </div>
+                 <div class="card interactive-card" data-content-id="resp-6">
+                    <header><h4 class="card-title text-lg">בקרת חוזים ודיווח <span class="text-blue-500 text-xl transform transition-transform duration-300">▼</span></h4></header>
+                    <div id="resp-6" class="hidden-content card-content mt-2"><p>בקרת חוזים וחשבונות קבלני משנה, בדיקת הצעות מחיר, ודיווחים לרשויות המס ולגופים מלווים.</p></div>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-semibold mb-4">מחזור חיי הבקרה התקציבית בפרויקט:</h3>
+            <div class="bg-white p-6 rounded-lg shadow mb-8">
+                <div class="flex border-b border-slate-200 mb-4">
+                    <button class="timeline-nav-item flex-1 py-2 px-4 text-center font-medium text-slate-600 hover:bg-blue-100 active" data-timeline-target="timeline-planning">שלב התכנון</button>
+                    <button class="timeline-nav-item flex-1 py-2 px-4 text-center font-medium text-slate-600 hover:bg-blue-100" data-timeline-target="timeline-execution">שלב הביצוע</button>
+                    <button class="timeline-nav-item flex-1 py-2 px-4 text-center font-medium text-slate-600 hover:bg-blue-100" data-timeline-target="timeline-completion">שלב הסיום</button>
+                </div>
+                <div id="timeline-planning" class="timeline-item-content">
+                    <h4 class="text-lg font-semibold text-blue-700 mb-2">שלב התכנון וההיתרים (Pre-Construction)</h4>
+                    <ul class="list-disc">
+                        <li>בניית תקציב בסיס ולו"ז תקורה.</li>
+                        <li>ביצוע "דוח אפס" (כדאיות כלכלית) וניתוח שוק.</li>
+                        <li>עריכת תזרים מזומנים חזוי.</li>
+                        <li>טיפול ברגולציה, דיווחים לרשויות, והכנת דוחות לגופים מלווים.</li>
+                        <li>ניתוח עלויות בנייה והערכת הכנסות צפויות.</li>
+                    </ul>
+                </div>
+                <div id="timeline-execution" class="timeline-item-content hidden-content">
+                    <h4 class="text-lg font-semibold text-blue-700 mb-2">שלב הביצוע (Construction)</h4>
+                    <ul class="list-disc">
+                        <li>ניהול הנהלת חשבונות שוטפת ופיקוח על תזרים מזומנים חודשי.</li>
+                        <li>בקרה תקציבית שוטפת, זיהוי פערים והפקת דוחות תקופתיים.</li>
+                        <li>קיום ישיבות בקרה חודשיות.</li>
+                        <li>ניהול קשר עם שמאים וגופים מלווים.</li>
+                        <li>מעקב אחר ניצול תקציב, ניתוח עלויות, ותיעוד התחייבויות.</li>
+                        <li>חיזוי דרישות בלתי צפויות (קונטינג'נסי).</li>
+                    </ul>
+                </div>
+                <div id="timeline-completion" class="timeline-item-content hidden-content">
+                    <h4 class="text-lg font-semibold text-blue-700 mb-2">שלב הסיום (Post-Construction)</h4>
+                    <ul class="list-disc">
+                        <li>ביצוע גמר חשבון לרוכשים לקראת אכלוס (לאחר טופס 4).</li>
+                        <li>הפקת דוח בקרה תקציבית מסכם.</li>
+                        <li>דיווח סופי לרשויות המס.</li>
+                        <li>הפקת דוח ניתוח רווחיות ללמידה עתידית.</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="card">
+                <h3 class="card-title">הבקר התקציבי כ"מנהל מידע" מקיף</h3>
+                <div class="card-content">
+                    <p>הבקר מהווה צומת מרכזי למידע פיננסי, חוזי ותפעולי. הוא מסנתז מידע ממקורות מגוונים (מנהלי פרויקטים, רכש, חשבונאות, שמאים, בנקים) כדי לספק תמונה הוליסטית. הדבר מדגיש את הצורך במערכות מידע חזקות ומשולבות (ERP, תוכנות ניהול פרויקטים) ל"מקור אמת יחיד".</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="information-management" class="content-section py-12">
+            <h2>III. איסוף ושימוש במידע לבקרה תקציבית</h2>
+            <p class="text-lg mb-6 leading-relaxed">תהליך הבקרה התקציבית נשען על איסוף שיטתי ומדויק של מגוון נתונים, ועל שימוש מושכל במידע זה לצורך ניתוח, דיווח וקבלת החלטות.</p>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="card">
+                    <h3 class="card-title">סוגי המידע הנאספים</h3>
+                    <div class="card-content">
+                        <ul class="list-disc">
+                            <li><b>עלויות:</b> אומדני עלויות מפורטים (חומרים, עבודה, תקורה, קבלני משנה, ציוד, מימון), עלויות תפעול ותחזוקה, עלויות נסתרות.</li>
+                            <li><b>הכנסות:</b> נתוני מכירות, הכנסות משכירות, דמי חניה ושירותים, תחזיות הכנסה ריאליסטיות.</li>
+                            <li><b>מימון:</b> מקורות מימון, תנאי הלוואות, לוחות זמנים לתשלומים.</li>
+                            <li><b>נתוני שוק:</b> מחירי שוק, מגמות כלליות, ביקוש והיצע, נתונים דמוגרפיים.</li>
+                            <li><b>נתוני ביצוע:</b> התקדמות פרויקט, התחייבויות קבלניות, עלות בפועל מול תקציב.</li>
+                            <li><b>רגולציה וציות:</b> עמידה בתקנות, חוקים ותקנים.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">מקורות ותדירות איסוף המידע</h3>
+                    <div class="card-content">
+                        <p><b>מקורות פנימיים:</b> מערכות הנה"ח ו-ERP, מנהלי פרויקטים, מחלקות רכש ומשאבי אנוש, חוזים.</p>
+                        <p><b>מקורות חיצוניים:</b> דוחות שמאות, גופים מלווים, רשויות מס, סקרי שוק.</p>
+                        <p><b>תדירות:</b> סקירות תקציב (שבועית/חודשית), מעקב תזרים (חודשי), ישיבות בקרה (חודשיות), עדכון נתונים שוטף/בזמן אמת.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-8">
+                <h3 class="card-title">שימוש במידע: מקבצי אקסל לכלים מתקדמים</h3>
+                <div class="card-content">
+                    <p>קבצי אקסל שימשו באופן מסורתי לבניית תקציבים, מעקב וחיזוי. הם גמישים אך מוגבלים בניהול נתונים גדולים, אינטגרציה ובקרה בזמן אמת.</p>
+                    <p><b>תוכן טיפוסי של קובץ אקסל לבקרה:</b> פירוט קטגוריות הוצאה/הכנסה, תיאור פריט, ספק, תקציב, עלות בפועל, הפרש, אחוז ביצוע, תאריכים. כולל חישובים אוטומטיים.</p>
+                    <p><b>המעבר לכלים מתקדמים:</b> מורכבות הפרויקטים דוחפת לאימוץ מערכות ERP ייעודיות לנדל"ן ותוכנות ניהול פרויקטים. כלים אלו מציעים אוטומציה, בקרה בזמן אמת, אינטגרציה, כלי BI ודשבורדים, ואנליטיקה מתקדמת (AI/ML).</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">הצורך ב"מקור אמת יחיד" (Single Source of Truth)</h3>
+                 <div class="card-content">
+                    <p>פיצול נתונים על פני מערכות שונות מונע ראייה כוללת ומחייב איסוף ידני המוביל לשגיאות. מערכות ERP ותוכנות מתקדמות מרכזות את כלל הנתונים בפלטפורמה אחת, מאפשרות בקרה בזמן אמת, משפרות שקיפות ומפשטות תהליכים.</p>
+                    <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-700 rounded">
+                        <p class="font-semibold">יתרונות "מקור אמת יחיד":</p>
+                        <ul class="list-disc ml-5">
+                            <li>בקרה בזמן אמת ומניעת אובדן שליטה תקציבית.</li>
+                            <li>תיעוד וקישור כל ההוצאות לתקציב.</li>
+                            <li>אינטגרציה עם מערכות הנהלת חשבונות לעדכוני עלויות מהירים.</li>
+                            <li>שיפור שקיפות וקבלת החלטות מדויקת יותר.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="metrics-reports" class="content-section py-12">
+            <h2>IV. מטריקות, סטטיסטיקות ודוחות בקרה תקציבית</h2>
+            <p class="text-lg mb-6 leading-relaxed">מדדי ביצוע מרכזיים (KPIs) ודוחות תקופתיים הם כלים חיוניים להבנת הבריאות הפיננסית של הפרויקט, זיהוי סטיות ונקיטת פעולות מתקנות.</p>
+
+            <h3 class="text-xl font-semibold mb-4">מדדי ביצוע מרכזיים (KPIs) לדוגמה:</h3>
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="card">
+                    <h4 class="card-title text-lg">ניצול תקציב (דוגמה)</h4>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="budgetUtilizationChart"></canvas>
+                    </div>
+                    <p class="text-sm text-center mt-2 text-slate-600">תרשים דונאט המדגים חלוקת תקציב מתוכנן מול ביצוע בפועל.</p>
+                </div>
+                <div class="card">
+                    <h4 class="card-title text-lg">שונות עלויות לפי קטגוריה (דוגמה)</h4>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="costVarianceChart"></canvas>
+                    </div>
+                     <p class="text-sm text-center mt-2 text-slate-600">תרשים עמודות המדגים חריגות תקציביות בקטגוריות שונות.</p>
+                </div>
+            </div>
+            <div class="card mb-8">
+                <h4 class="card-title">קטגוריות מדדים עיקריות:</h4>
+                <div class="card-content">
+                    <ul class="list-disc columns-1 md:columns-2">
+                        <li><b>מדדים פיננסיים:</b> NOI, Cap Rate, ROI, תזרים מזומנים, שונות עלויות (CV), אחוז ניצול תקציב.</li>
+                        <li><b>מדדים תפעוליים:</b> שיעור תפוסה, עלויות תחזוקה, שיעור שימור דיירים.</li>
+                        <li><b>מדדי ניהול נכסים:</b> הערכת שווי נכס.</li>
+                        <li><b>מדדי ניהול סיכונים:</b> שיעור ציות, שיעור תקריות בטיחות, קרן חירום/קונטינג'נסי.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">סוגי דוחות בקרה תקציבית ומטרותיהם:</h3>
+            <div id="reportTypesAccordion" class="space-y-4">
+                <div class="card accordion-item">
+                    <header class="accordion-header p-4 bg-slate-100 hover:bg-slate-200 rounded-t-lg flex justify-between items-center">
+                        <h4 class="font-semibold text-blue-700">דוחות תקופתיים (חודשיים/רבעוניים)</h4>
+                        <span class="text-blue-500 text-xl transform transition-transform duration-300">►</span>
+                    </header>
+                    <div class="accordion-content hidden-content p-4 border border-t-0 border-slate-200 rounded-b-lg">
+                        <p><b>מטרה:</b> הצגת תמונת מצב תקציבית עדכנית, השוואה לתקופות קודמות, מעקב ביצוע מול תכנון, זיהוי פערים וניתוח עלויות. משמשים לדיונים בישיבות בקרה.</p>
+                    </div>
+                </div>
+                <div class="card accordion-item">
+                    <header class="accordion-header p-4 bg-slate-100 hover:bg-slate-200 rounded-t-lg flex justify-between items-center">
+                        <h4 class="font-semibold text-blue-700">דוחות חריגה (Variance Reports)</h4>
+                         <span class="text-blue-500 text-xl transform transition-transform duration-300">►</span>
+                    </header>
+                    <div class="accordion-content hidden-content p-4 border border-t-0 border-slate-200 rounded-b-lg">
+                        <p><b>מטרה:</b> זיהוי והסברת פערים משמעותיים בין עלויות מתוכננות לפועלות. מפרטים סוגי שונויות (חומרים, עבודה, תקורה) וגורמים לחריגות. קריטיים לקבלת החלטות מהירות.</p>
+                    </div>
+                </div>
+                <div class="card accordion-item">
+                    <header class="accordion-header p-4 bg-slate-100 hover:bg-slate-200 rounded-t-lg flex justify-between items-center">
+                        <h4 class="font-semibold text-blue-700">דוחות תזרים מזומנים</h4>
+                         <span class="text-blue-500 text-xl transform transition-transform duration-300">►</span>
+                    </header>
+                    <div class="accordion-content hidden-content p-4 border border-t-0 border-slate-200 rounded-b-lg">
+                        <p><b>מטרה:</b> הצגת תנועת מזומנים חזויה ופועלת, חודש בחודשו. חיוניים לניהול נזילות, זיהוי צרכי מימון ומניעת חוסר במזומנים.</p>
+                    </div>
+                </div>
+                 <div class="card accordion-item">
+                    <header class="accordion-header p-4 bg-slate-100 hover:bg-slate-200 rounded-t-lg flex justify-between items-center">
+                        <h4 class="font-semibold text-blue-700">דוחות כדאיות ורווחיות</h4>
+                         <span class="text-blue-500 text-xl transform transition-transform duration-300">►</span>
+                    </header>
+                    <div class="accordion-content hidden-content p-4 border border-t-0 border-slate-200 rounded-b-lg">
+                        <p><b>דוח אפס:</b> מוגש בתחילת הפרויקט, מנתח כדאיות כלכלית (עלויות, הכנסות).</p>
+                        <p><b>דוח ניתוח רווחיות:</b> מופק בסיום הפרויקט, מעריך רווחיות כוללת.</p>
+                    </div>
+                </div>
+            </div>
+             <div class="card mt-8">
+                <h3 class="card-title">חשיבות האינטגרציה ודוחות ככלי תקשורת</h3>
+                <div class="card-content">
+                    <p>שילוב מדדים פיננסיים ותפעוליים קריטי לתמונה הוליסטית. דוחות הבקרה אינם רק מסמכים חשבונאיים, אלא כלי תקשורת אסטרטגיים המאפשרים שקיפות, קבלת החלטות מושכלת ובניית אמון עם בעלי העניין.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="advanced-analytics" class="content-section py-12">
+            <h2>V. אנליטיקה מתקדמת בבקרה תקציבית</h2>
+            <p class="text-lg mb-6 leading-relaxed">האנליטיקה בבקרה התקציבית התפתחה וכוללת מתודולוגיות מורכבות וכלים טכנולוגיים מתקדמים, המאפשרים לחזות את העתיד ולנהל סיכונים באופן פרואקטיבי.</p>
+
+            <div class="mb-8">
+                <div class="flex border-b border-slate-300">
+                    <button class="tab-button flex-1 p-3 text-center font-medium text-slate-700 hover:bg-blue-50 active" data-tab-target="analytics-methods">מתודולוגיות אנליטיות</button>
+                    <button class="tab-button flex-1 p-3 text-center font-medium text-slate-700 hover:bg-blue-50" data-tab-target="analytics-tools">כלים טכנולוגיים</button>
+                    <button class="tab-button flex-1 p-3 text-center font-medium text-slate-700 hover:bg-blue-50" data-tab-target="analytics-challenges">אתגרים ופתרונות</button>
+                </div>
+
+                <div id="analytics-methods" class="tab-content card mt-4">
+                    <h3 class="card-title">מתודולוגיות אנליטיות מרכזיות:</h3>
+                    <div class="card-content space-y-3">
+                        <p><b>ניתוח שונות (Variance Analysis):</b> השוואת עלויות מתוכננות לפועלות, זיהוי הפרשים והבנת הסיבות לחריגות.</p>
+                        <p><b>ניתוח מגמות (Trend Analysis):</b> זיהוי דפוסים היסטוריים וחיזוי תוצאות עתידיות על בסיס נתונים אלו, תוך ניטור שינויים בשוק.</p>
+                        <p><b>חיזוי תקציבי (Budget Forecasting):</b> ניבוי תוצאות פיננסיות עתידיות על ידי ניתוח נתונים היסטוריים, מגמות שוק ויעדים עסקיים.</p>
+                        <p><b>ניתוח רגישות ותכנון תרחישים:</b> בחינת השפעת שינויים במשתני מפתח על התוצאות הפיננסיות, והכנת תוכניות פעולה לתרחישים שונים.</p>
+                        <p><b>ניהול ערך נצבר (EVM):</b> שילוב מדדי עלות, לו"ז וביצועים להערכת התקדמות הפרויקט וחיזוי ביצועים עתידיים.</p>
+                        <p><b>ניתוח כדאיות כלכלית:</b> הערכת הפוטנציאל הכלכלי של הפרויקט (עלויות, הכנסות, תזרים, סיכונים).</p>
+                    </div>
+                </div>
+
+                <div id="analytics-tools" class="tab-content card mt-4 hidden">
+                    <h3 class="card-title">כלים טכנולוגיים ותוכנות תומכות:</h3>
+                    <div class="card-content space-y-3">
+                        <p><b>תוכנות ERP לנדל"ן:</b> (כגון SAP Business One, Tafnit) פתרון אינטגרטיבי לניהול פיננסים, הנה"ח, ניהול נכסים ופרויקטים.</p>
+                        <p><b>תוכנות לניהול פרויקטים ובקרה תקציבית:</b> (כגון Procore, Ramdor, Rabbet) יכולות ניהול תקציב, מעקב עלויות, ניהול חוזים ותזרים, ודיווחים.</p>
+                        <p><b>כלי BI ודשבורדים:</b> (כמו ב-Fireberry CRM, Prophix One) תובנות בזמן אמת על KPIs באמצעות תרשימים ויזואליים.</p>
+                        <p><b>בינה מלאכותית (AI) ולמידת מכונה (ML):</b> שיפור דיוק החיזוי, זיהוי דפוסים, אופטימיזציה של תמחור וזיהוי סיכונים אוטומטי.</p>
+                    </div>
+                </div>
+
+                <div id="analytics-challenges" class="tab-content card mt-4 hidden">
+                    <h3 class="card-title">אתגרים ביישום אנליטיקה ופתרונות:</h3>
+                    <div class="card-content space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-blue-600">אתגרי נתונים (לא מדויקים, חלקיים, מפוצלים):</h4>
+                            <p><b>פתרונות:</b> השקעה במערכות ERP משולבות ("מקור אמת יחיד"), אוטומציה של איסוף נתונים, ביקורות תקופתיות.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-600">אתגרי שוק ורגולציה (תנודתיות, מורכבות מיסוי):</h4>
+                            <p><b>פתרונות:</b> שימוש בכלי חיזוי מתקדמים, התייעצות עם מומחים.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-600">אתגרי תרבות ארגונית וטכנולוגיה (התנגדות לשינוי, חוסר מיומנות):</h4>
+                            <p><b>פתרונות:</b> השקעה בטכנולוגיה ידידותית, הדרכות, אימוץ הדרגתי, שיתוף פעולה הדוק.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="card-title">המעבר לתחזיות פרואקטיביות וניהול סיכונים מבוסס נתונים</h3>
+                <div class="card-content">
+                <p>האנליטיקה מאפשרת מעבר מגישה ריאקטיבית (תגובה לחריגות) לגישה פרואקטיבית (חיזוי סיכונים ונקיטת צעדים מונעים). ניתוח מגמות, חיזוי וניתוח רגישות מזהים מוקדי סיכון מוקדם, ומערכות בקרה מתקדמות מספקות תובנות בזמן אמת לניהול סיכונים יזום. גישה זו משפרת את היכולת לשמור על הפרויקט במסגרת התקציב ולמקסם רווחיות.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusions" class="content-section py-12">
+            <h2>VI. מסקנות והמלצות</h2>
+            <p class="text-lg mb-6 leading-relaxed">הבקרה התקציבית בפרויקטי נדל"ן היא עמוד שדרה אסטרטגי. תפקיד הבקר התפתח למנהל מידע מקיף, המשלב נתונים פיננסיים, תפעוליים ושווקיים לקבלת החלטות מושכלות.</p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card">
+                    <h3 class="card-title">מסקנות עיקריות:</h3>
+                    <div class="card-content">
+                        <ul class="list-disc">
+                            <li><b>תפקיד אסטרטגי:</b> קריטי לרווחיות, ניהול סיכונים והחלטות אסטרטגיות.</li>
+                            <li><b>דינמיות:</b> משתנה לאורך מחזור חיי הפרויקט.</li>
+                            <li><b>חשיבות הנתונים:</b> איסוף מקיף, מדויק ובתדירות גבוהה.</li>
+                            <li><b>טכנולוגיה מתקדמת:</b> הכרח למעבר מכלים בסיסיים לפתרונות ERP, BI, AI/ML.</li>
+                            <li><b>אנליטיקה פרואקטיבית:</b> מאפשרת ניהול סיכונים יזום.</li>
+                            <li><b>דוחות כתקשורת:</b> כלים אסטרטגיים לשקיפות וקבלת החלטות.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">המלצות לחברות נדל"ן:</h3>
+                     <div class="card-content">
+                        <ul class="list-disc">
+                            <li>השקעה בבקרים בעלי כישורים מגוונים.</li>
+                            <li>הטמעת מערכות מידע אינטגרטיביות ("מקור אמת יחיד").</li>
+                            <li>פיתוח יכולות אנליטיות מתקדמות.</li>
+                            <li>ביצוע בקרות תקציביות תדירות ושיטתיות.</li>
+                            <li>הקצאת קרן קונטינג'נסי מבוססת סיכון.</li>
+                            <li>שקיפות ותקשורת עם כלל בעלי העניין.</li>
+                            <li>למידה והתאמה מתמדת מפרויקטים קודמים.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-8 text-center text-lg">יישום המלצות אלו יחזק את הבקרה התקציבית, ישפר ביצועים פיננסיים, ימזער סיכונים ויבטיח הצלחת פרויקטים מורכבים.</p>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 text-center p-6">
+        <p>&copy; 2025 מדריך בקרה תקציבית בנדל"ן. כל הזכויות שמורות (לתצוגה בלבד).</p>
+    </footer>
+
+    <div class="chat-button-container">
+        <button id="openChatButton" class="chat-button">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+        </button>
+    </div>
+
+    <div id="chatModal" class="chat-modal-backdrop hidden">
+        <div class="chat-modal-content">
+            <button id="closeChatButton" class="chat-modal-close">×</button>
+            <h3 class="text-xl font-bold text-blue-700 mb-4">שלח/י לנו שאלה</h3>
+            <form id="chatForm" class="space-y-4">
+                <div>
+                    <label for="firstName" class="block text-sm font-medium text-slate-700 mb-1">שם פרטי</label>
+                    <input type="text" id="firstName" name="firstName" class="w-full p-2 border border-slate-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label for="lastName" class="block text-sm font-medium text-slate-700 mb-1">שם משפחה</label>
+                    <input type="text" id="lastName" name="lastName" class="w-full p-2 border border-slate-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-slate-700 mb-1">כתובת אימייל</label>
+                    <input type="email" id="email" name="email" class="w-full p-2 border border-slate-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label for="question" class="block text-sm font-medium text-slate-700 mb-1">השאלה שלך</label>
+                    <textarea id="question" name="question" rows="4" class="w-full p-2 border border-slate-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                </div>
+                <button type="submit" class="w-full btn btn-primary">שלח שאלה</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Close mobile menu on link click
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu) mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Smooth scroll and active nav highlighting
+            const navLinks = document.querySelectorAll('nav a[href^="#"], #mobile-menu a[href^="#"]');
+            const sections = document.querySelectorAll('.content-section');
+
+            function changeNav(targetId) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                    if (link.getAttribute('href') === `#${targetId}`) {
+                        link.classList.add('active-nav');
+                    }
+                });
+            }
+            
+            // Intersection Observer for active nav link
+            const observerOptions = {
+                root: null,
+                rootMargin: '-50% 0px -50% 0px', // Trigger when section is in middle of viewport
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const targetId = entry.target.id;
+                        // Desktop nav
+                        document.querySelectorAll('header nav a').forEach(link => {
+                            link.classList.toggle('active-nav', link.getAttribute('href') === `#${targetId}`);
+                        });
+                        // Mobile nav (if needed, though click-based might be enough for mobile)
+                         document.querySelectorAll('#mobile-menu a').forEach(link => {
+                            link.classList.toggle('active-nav', link.getAttribute('href') === `#${targetId}`);
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Initial active link for desktop
+            if (sections.length > 0) {
+                 const firstSectionId = sections[0].id;
+                 document.querySelectorAll('header nav a').forEach(link => {
+                    if (link.getAttribute('href') === `#${firstSectionId}`) {
+                        link.classList.add('active-nav');
+                    }
+                });
+            }
+
+
+            // Interactive cards toggle
+            document.querySelectorAll('.interactive-card header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const contentId = header.parentElement.dataset.contentId;
+                    const contentElement = document.getElementById(contentId);
+                    const icon = header.querySelector('span');
+                    if (contentElement) {
+                        contentElement.classList.toggle('hidden-content');
+                        icon.classList.toggle('rotate-180');
+                    }
+                });
+            });
+
+            // Accordion toggle
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('span');
+                    
+                    // Close other open accordions in the same group if needed
+                    // const parentAccordion = header.closest('.accordion');
+                    // if (parentAccordion) {
+                    //     parentAccordion.querySelectorAll('.accordion-content').forEach(accContent => {
+                    //         if (accContent !== content) {
+                    //             accContent.classList.add('hidden-content');
+                    //             // Reset other icons
+                    //         }
+                    //     });
+                    // }
+
+                    content.classList.toggle('hidden-content');
+                    icon.textContent = content.classList.contains('hidden-content') ? '►' : '▼';
+                });
+            });
+            
+            // Timeline navigation
+            const timelineNavItems = document.querySelectorAll('.timeline-nav-item');
+            const timelineContents = document.querySelectorAll('.timeline-item-content');
+
+            timelineNavItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const targetId = item.dataset.timelineTarget;
+                    
+                    timelineNavItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+
+                    timelineContents.forEach(content => {
+                        if (content.id === targetId) {
+                            content.classList.remove('hidden-content');
+                        } else {
+                            content.classList.add('hidden-content');
+                        }
+                    });
+                });
+            });
+             // Set initial active timeline item
+            if (timelineNavItems.length > 0) {
+                timelineNavItems[0].classList.add('active');
+                const firstTimelineContentId = timelineNavItems[0].dataset.timelineTarget;
+                document.getElementById(firstTimelineContentId)?.classList.remove('hidden-content');
+            }
+
+
+            // Tabs navigation for Advanced Analytics
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('#advanced-analytics .tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.tabTarget;
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        content.classList.toggle('hidden', content.id !== targetId);
+                    });
+                });
+            });
+             // Set initial active tab
+            if (tabButtons.length > 0) {
+                tabButtons[0].classList.add('active');
+                const firstTabContentId = tabButtons[0].dataset.tabTarget;
+                document.getElementById(firstTabContentId)?.classList.remove('hidden');
+            }
+
+
+            // Chart.js Examples
+            // Budget Utilization Chart (Donut)
+            const budgetUtilCtx = document.getElementById('budgetUtilizationChart');
+            if (budgetUtilCtx) {
+                new Chart(budgetUtilCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['נוצל', 'נותר'],
+                        datasets: [{
+                            label: 'ניצול תקציב',
+                            data: [75, 25], // Example data: 75% utilized, 25% remaining
+                            backgroundColor: ['#3b82f6', '#93c5fd'],
+                            borderColor: ['#2563eb', '#60a5fa'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top', labels: { font: { family: 'Inter'}}},
+                            tooltip: { bodyFont: { family: 'Inter'}, titleFont: { family: 'Inter'}}
+                        }
+                    }
+                });
+            }
+
+            // Cost Variance Chart (Bar)
+            const costVarianceCtx = document.getElementById('costVarianceChart');
+            if (costVarianceCtx) {
+                new Chart(costVarianceCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['חומרים', 'עבודה', 'קבלני משנה', 'תקורה'],
+                        datasets: [{
+                            label: 'חריגה/חיסכון מהתקציב (אלפי ש"ח)',
+                            data: [50, -20, 15, -5], // Example data: Positive = over budget, Negative = under budget
+                            backgroundColor: (context) => {
+                                const value = context.dataset.data[context.dataIndex];
+                                return value >= 0 ? '#ef4444' : '#22c55e'; // Red for over, Green for under
+                            },
+                            borderColor: (context) => {
+                                const value = context.dataset.data[context.dataIndex];
+                                return value >= 0 ? '#dc2626' : '#16a34a';
+                            },
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, ticks: { font: { family: 'Inter' } } },
+                            x: { ticks: { font: { family: 'Inter' } } }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { bodyFont: { family: 'Inter'}, titleFont: { family: 'Inter'}}
+                        }
+                    }
+                });
+            }
+
+            // Chat button and modal logic
+            const openChatButton = document.getElementById('openChatButton');
+            const chatModal = document.getElementById('chatModal');
+            const closeChatButton = document.getElementById('closeChatButton');
+            const chatForm = document.getElementById('chatForm');
+
+            if (openChatButton && chatModal && closeChatButton && chatForm) {
+                openChatButton.addEventListener('click', () => {
+                    chatModal.classList.remove('hidden');
+                });
+
+                closeChatButton.addEventListener('click', () => {
+                    chatModal.classList.add('hidden');
+                });
+
+                chatModal.addEventListener('click', (e) => {
+                    if (e.target === chatModal) {
+                        chatModal.classList.add('hidden');
+                    }
+                });
+
+                chatForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(chatForm);
+                    const data = Object.fromEntries(formData.entries());
+
+                    try {
+                        const response = await fetch('/send-chat-form', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        });
+                        if (response.ok) {
+                            chatForm.reset();
+                            chatModal.classList.add('hidden');
+                            alert('הטופס נשלח בהצלחה!');
+                        } else {
+                            alert('שליחת הטופס נכשלה. נסה שוב מאוחר יותר.');
+                        }
+                    } catch (err) {
+                        alert('שגיאה בשליחת הטופס.');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
