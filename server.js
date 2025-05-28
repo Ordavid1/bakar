@@ -3,8 +3,11 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const app = express();
-const port = 3000; // You can use any port you like
 require('dotenv').config();
+
+// PORT environment variable is provided by Cloud Run.
+// Use it if available, otherwise default to 3000 for local development.
+const port = process.env.PORT || 3000;
 
 // Middleware to parse JSON and urlencoded form data
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,9 +20,6 @@ app.set('views', path.join(__dirname, 'views'));
 
 // A route to render your main.ejs page
 app.get('/', (req, res) => {
-    // If you need to pass data to your EJS template, you can do it here:
-    // const data = { title: "My EJS Page", message: "Hello from the server!" };
-    // res.render('main', data); 
     res.render('main'); // Renders views/main.ejs
 });
 
@@ -27,9 +27,9 @@ app.get('/', (req, res) => {
 app.post('/send-chat-form', async (req, res) => {
     const { firstName, lastName, email, question } = req.body;
 
-    // Configure your SMTP transporter (replace with your real credentials)
+    // Configure your SMTP transporter
     let transporter = nodemailer.createTransport({
-        service: 'gmail', // or another SMTP service
+        service: 'gmail',
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS
@@ -37,9 +37,9 @@ app.post('/send-chat-form', async (req, res) => {
     });
 
     const mailOptions = {
-        from: email,
-        to: process.env.DESTINATION_EMAIL, // <-- Replace with your destination email
-        subject: 'New Chat Form Submission',
+        from: email, // This is the email from the form filler
+        to: process.env.GMAIL_DEST_EMAIL || process.env.GMAIL_USER, // Use a specific destination or default to GMAIL_USER
+        subject: 'New Chat Form Submission from Bakar Site',
         text: `שם פרטי: ${firstName}\nשם משפחה: ${lastName}\nאימייל: ${email}\nשאלה: ${question}`
     };
 
@@ -47,13 +47,12 @@ app.post('/send-chat-form', async (req, res) => {
         await transporter.sendMail(mailOptions);
         res.json({ success: true });
     } catch (err) {
-        console.error(err);
+        console.error('Failed to send email:', err); // Log the error
         res.status(500).json({ success: false, error: 'Failed to send email' });
     }
 });
 
 // Start the server
-// Make sure to replace the port with your desired port number
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running on port http://localhost:${port}`);
 });
