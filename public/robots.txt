@@ -1,0 +1,6 @@
+# public/robots.txt
+User-agent: *
+Allow: /
+Disallow: /send-chat-form # Don't crawl the form submission endpoint
+
+Sitemap: https://www.xn--5dbaiub9efbhvf.xyz/sitemap.xml
