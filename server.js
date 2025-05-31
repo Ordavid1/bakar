@@ -21,18 +21,29 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Route for the main page
 app.get('/', (req, res) => {
+    const now = new Date();   // Format to YYYY-MM-DDTHH:MM:SSZ (without milliseconds)
+    const year = now.getUTCFullYear();
+    const month = String(now.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(now.getUTCDate()).padStart(2, '0');
+    const hours = String(now.getUTCHours()).padStart(2, '0');
+    const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+
+    const isoDateModified = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
+
     // You can pass dynamic data to your EJS template if needed
     // For example, if the canonical URL or title might change based on parameters
     const viewData = {
         // Example: Pass the canonical URL if it's dynamic or configured
         canonicalUrl: `https://www.xn--5dbaiub9efbhvf.xyz${req.path}`,
-        pageTitle: "בקרה תקציבית בפרויקטי נדל\"ן: מדריך אינטראקטיבי"
+        pageTitle: "בקרה תקציבית בפרויקטי נדל\"ן: מדריך אינטראקטיבי",
+        currentIsoDate: isoDateModified
     };
     res.render('main', viewData);
 });
 
 // Route for sitemap.xml
-app.get('/sitemap.xml', (req, res) => {
+app.get('/sitemap.xml', (_req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'sitemap.xml'));
 });
 
