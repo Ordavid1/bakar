@@ -94,32 +94,33 @@
     </style>
 
     <%# JSON-LD Structured Data for SEO %>
-    <script type="application/ld+json">
+ <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "TechArticle",
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://www.בקרהתקציבית.xyz/"
+        "@id": "https://www.xn--5dbaiub9efbhvf.xyz/" // Assuming Punycode is preferred for IDs by you now
       },
       "headline": "בקרה תקציבית בפרויקטי נדלן: מדריך אינטראקטיבי מקיף",
       "description": "המדריך המקיף לבקרה תקציבית בפרויקטי נדלן. למד על תפקיד הבקר, ניהול מידע, מדדים, דוחות ואנליטיקה מתקדמת להצלחת פרויקטי בינוי.",
-      "image": "https://www.xn--5dbaiub9efbhvf.xyz/og-image.jpg", <%# Replace with your actual image URL %>
+      "image": "https://www.xn--5dbaiub9efbhvf.xyz/og-image.jpg",
       "author": {
         "@type": "Organization",
-        "name": "מדריך בקרה תקציבית"
+        "name": "מדריך בקרה תקציבית",
+        "url": "https://www.xn--5dbaiub9efbhvf.xyz/" // Added URL for author
       },
       "publisher": {
         "@type": "Organization",
-        "name": "מדריך בקרה תקציבית", <%# Replace with your organization name %>
+        "name": "מדריך בקרה תקציבית",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.xn--5dbaiub9efbhvf.xyz/logo.png" <%# Replace with your logo URL %>
+          "url": "https://www.xn--5dbaiub9efbhvf.xyz/logo.png"
         }
       },
-      "datePublished": "2024-05-28", <%# Replace with the actual publication date %>
-      "dateModified": "<%= new Date().toISOString().split('T')[0] %>", <%# Automatically sets current date as modified date %>
-      "keywords": "בקרה תקציבית, נדלן, פרויקטי בינוי, ניהול פרויקטים, תקצוב נדלן, בקר תקציב, עלויות בניה, דוחות כספיים נדלן, אנליטיקה בנדלן",
+      "datePublished": "2024-05-28T00:00:00Z", // Full ISO 8601 format
+      "dateModified": "<%= new Date().toISOString() %>", // Full ISO 8601 format
+      "keywords": "בקרה תקציבית, נדלן, פרויקטי בינוי, ניהול פרויקטים, תקצוב נדלן, בקר תקציב, עלויות בניה, דוחות כספיים נדלן, אנליטיקה בנדלן", // Note: keywords meta tag is more standard than JSON-LD keywords
       "articleSection": [
         "מבוא לבקרה תקציבית בנדלן",
         "תפקיד בקר התקציב בפרויקט נדלן",
@@ -130,7 +131,7 @@
       ],
       "isPartOf": {
         "@type": "WebSite",
-        "url": "https://www.בקרהתקציבית.xyz/",
+        "url": "https://www.xn--5dbaiub9efbhvf.xyz/", // Assuming Punycode here too for consistency with mainEntityOfPage @id
         "name": "מדריך בקרה תקציבית"
       }
     }
