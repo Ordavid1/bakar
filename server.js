@@ -97,8 +97,10 @@ app.use((req, res, next) => {
 if (isProduction) {
     app.use((req, res, next) => {
         const host = req.get('Host');
-        if (host && host.startsWith('www.')) {
-            return res.redirect(301, 'https://' + host.slice(4) + req.originalUrl);
+        // If host exists and does NOT start with www, redirect to www
+        if (host && !host.startsWith('www.') && !host.includes('run.app')) {
+            // Don't redirect Cloud Run URLs
+            return res.redirect(301, 'https://www.' + host + req.originalUrl);
         }
         next();
     });
