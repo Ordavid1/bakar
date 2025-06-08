@@ -1,45 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <!-- Homepage -->
   <url>
     <loc>https://www.xn--5dbaiub9efbhvf.xyz/</loc>
-    <lastmod>2025-05-28</lastmod> <%# Updated to current date %>
-    <changefreq>monthly</changefreq>
+    <xhtml:link rel="alternate" hreflang="he-IL" href="https://www.xn--5dbaiub9efbhvf.xyz/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.xn--5dbaiub9efbhvf.xyz/"/>
+    <lastmod><%= new Date().toISOString() %></lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.xn--5dbaiub9efbhvf.xyz/og-image-1200x630.jpg</image:loc>
+      <image:title>בקרה תקציבית בפרויקטי נדל״ן</image:title>
+      <image:caption>מדריך מקיף לבקרה תקציבית בנדל״ן</image:caption>
+    </image:image>
   </url>
+  
+  <!-- Main Sections -->
   <url>
     <loc>https://www.xn--5dbaiub9efbhvf.xyz/#introduction</loc>
-    <lastmod>2025-05-28</lastmod> <%# Updated to current date %>
+    <lastmod><%= new Date().toISOString() %></lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+  
   <url>
     <loc>https://www.xn--5dbaiub9efbhvf.xyz/#controller-role</loc>
-    <lastmod>2025-05-28</lastmod> <%# Updated to current date %>
+    <lastmod><%= new Date().toISOString() %></lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+  
   <url>
     <loc>https://www.xn--5dbaiub9efbhvf.xyz/#information-management</loc>
-    <lastmod>2025-05-28</lastmod> <%# Updated to current date %>
+    <lastmod><%= new Date().toISOString() %></lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  
   <url>
     <loc>https://www.xn--5dbaiub9efbhvf.xyz/#metrics-reports</loc>
-    <lastmod>2025-05-28</lastmod> <%# Updated to current date %>
+    <lastmod><%= new Date().toISOString() %></lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  
   <url>
     <loc>https://www.xn--5dbaiub9efbhvf.xyz/#advanced-analytics</loc>
-    <lastmod>2025-05-28</lastmod> <%# Updated to current date %>
+    <lastmod><%= new Date().toISOString() %></lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  
   <url>
     <loc>https://www.xn--5dbaiub9efbhvf.xyz/#conclusions</loc>
-    <lastmod>2025-05-28</lastmod> <%# Updated to current date %>
+    <lastmod><%= new Date().toISOString() %></lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xn--5dbaiub9efbhvf.xyz/#faq</loc>
+    <lastmod><%= new Date().toISOString() %></lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  
+  <!-- Future Pages (when implemented) -->
+  <url>
+    <loc>https://www.xn--5dbaiub9efbhvf.xyz/calculator</loc>
+    <lastmod><%= new Date().toISOString() %></lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xn--5dbaiub9efbhvf.xyz/templates</loc>
+    <lastmod><%= new Date().toISOString() %></lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xn--5dbaiub9efbhvf.xyz/glossary</loc>
+    <lastmod><%= new Date().toISOString() %></lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xn--5dbaiub9efbhvf.xyz/privacy</loc>
+    <lastmod><%= new Date().toISOString() %></lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xn--5dbaiub9efbhvf.xyz/terms</loc>
+    <lastmod><%= new Date().toISOString() %></lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xn--5dbaiub9efbhvf.xyz/accessibility</loc>
+    <lastmod><%= new Date().toISOString() %></lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>

@@ -1,0 +1,176 @@
+<%# views/privacy.ejs - SEO Optimized Privacy Policy %>
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מדיניות פרטיות | בקרה תקציבית בפרויקטי נדל"ן</title>
+    <meta name="description" content="מדיניות הפרטיות של אתר בקרה תקציבית. למד כיצד אנו אוספים, משתמשים ומגנים על המידע שלך.">
+    <meta name="robots" content="index, follow, max-snippet:-1">
+    <link rel="canonical" href="https://www.בקרהתקציבית.xyz/privacy">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="מדיניות פרטיות - בקרה תקציבית">
+    <meta property="og:description" content="מדיניות הפרטיות שלנו מסבירה כיצד אנו מטפלים במידע שלך">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.בקרהתקציבית.xyz/privacy">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Schema.org markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "מדיניות פרטיות",
+      "description": "מדיניות הפרטיות של אתר בקרה תקציבית",
+      "url": "https://www.xn--5dbaiub9efbhvf.xyz/privacy",
+      "isPartOf": {
+        "@type": "WebSite",
+        "url": "https://www.xn--5dbaiub9efbhvf.xyz/"
+      },
+      "inLanguage": "he-IL",
+      "dateModified": "<%= new Date().toISOString() %>",
+      "publisher": {
+        "@type": "Organization",
+        "name": "מדריך בקרה תקציבית"
+      }
+    }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <!-- Include header partial -->
+    <% include('./partials/header') %>
+    
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-4xl">
+        <article itemscope itemtype="https://schema.org/Article">
+            <h1 class="text-3xl font-bold text-blue-800 mb-6" itemprop="headline">מדיניות פרטיות</h1>
+            
+            <div class="prose prose-lg max-w-none" itemprop="articleBody">
+                <p class="text-gray-600 mb-6">
+                    <time datetime="<%= new Date().toISOString() %>" itemprop="dateModified">
+                        עודכן לאחרונה: <%= new Date().toLocaleDateString('he-IL') %>
+                    </time>
+                </p>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">1. מבוא</h2>
+                    <p>ברוכים הבאים למדיניות הפרטיות של "בקרה תקציבית בפרויקטי נדל״ן". אנו מחויבים להגן על פרטיותך ולהבטיח שהמידע האישי שלך מטופל באחריות ובשקיפות מלאה.</p>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">2. איסוף מידע</h2>
+                    <h3 class="text-xl font-semibold mb-2">2.1 מידע שאתה מספק לנו</h3>
+                    <ul class="list-disc list-inside mb-4">
+                        <li>שם מלא ופרטי קשר (בעת מילוי טופס יצירת קשר)</li>
+                        <li>כתובת דואר אלקטרוני (להרשמה לניוזלטר)</li>
+                        <li>שאלות או הודעות שאתה שולח אלינו</li>
+                    </ul>
+                    
+                    <h3 class="text-xl font-semibold mb-2">2.2 מידע שנאסף אוטומטית</h3>
+                    <ul class="list-disc list-inside mb-4">
+                        <li>כתובת IP</li>
+                        <li>סוג הדפדפן ומערכת ההפעלה</li>
+                        <li>דפים שביקרת באתר</li>
+                        <li>זמני ביקור ומשך השהייה</li>
+                        <li>מקור ההפניה לאתר</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">3. שימוש במידע</h2>
+                    <p class="mb-4">אנו משתמשים במידע שנאסף למטרות הבאות:</p>
+                    <ul class="list-disc list-inside mb-4">
+                        <li>מענה לפניות ושאלות</li>
+                        <li>שליחת עדכונים וחומרים רלוונטיים (באישורך)</li>
+                        <li>שיפור חוויית המשתמש באתר</li>
+                        <li>ניתוח סטטיסטי של השימוש באתר</li>
+                        <li>אבטחת האתר ומניעת פעילות זדונית</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">4. עוגיות (Cookies)</h2>
+                    <p class="mb-4">האתר משתמש בעוגיות לצורך:</p>
+                    <ul class="list-disc list-inside mb-4">
+                        <li><strong>עוגיות הכרחיות:</strong> לתפקוד בסיסי של האתר</li>
+                        <li><strong>עוגיות אנליטיקה:</strong> Google Analytics למעקב אחר ביצועי האתר</li>
+                        <li><strong>עוגיות שיווק:</strong> Google Tag Manager (באישורך)</li>
+                    </ul>
+                    <p>באפשרותך לנהל את העדפות העוגיות דרך הגדרות הדפדפן שלך.</p>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">5. שיתוף מידע עם צדדים שלישיים</h2>
+                    <p class="mb-4">איננו מוכרים או משכירים את המידע האישי שלך. נשתף מידע רק במקרים הבאים:</p>
+                    <ul class="list-disc list-inside mb-4">
+                        <li>בהסכמתך המפורשת</li>
+                        <li>לצורך מתן השירות (כגון שליחת אימיילים דרך Gmail)</li>
+                        <li>על פי דרישת החוק או צו בית משפט</li>
+                        <li>להגנה על זכויותינו או בטיחות המשתמשים</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">6. אבטחת מידע</h2>
+                    <p>אנו נוקטים באמצעי אבטחה טכניים וארגוניים לשמירה על המידע שלך, כולל:</p>
+                    <ul class="list-disc list-inside mb-4">
+                        <li>הצפנת SSL לכל התקשורת עם האתר</li>
+                        <li>גישה מוגבלת למידע אישי</li>
+                        <li>עדכוני אבטחה שוטפים</li>
+                        <li>גיבויים תקופתיים</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">7. הזכויות שלך</h2>
+                    <p class="mb-4">על פי חוק הגנת הפרטיות, יש לך זכות:</p>
+                    <ul class="list-disc list-inside mb-4">
+                        <li>לעיין במידע שאנו שומרים עליך</li>
+                        <li>לתקן מידע שגוי</li>
+                        <li>למחוק את המידע שלך</li>
+                        <li>להתנגד לעיבוד המידע</li>
+                        <li>לקבל את המידע שלך בפורמט נייד</li>
+                        <li>לבטל הסכמה לקבלת דיוורים</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">8. קישורים לאתרים חיצוניים</h2>
+                    <p>האתר עשוי להכיל קישורים לאתרים חיצוניים. איננו אחראים למדיניות הפרטיות או לתוכן של אתרים אלה.</p>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">9. ילדים</h2>
+                    <p>האתר אינו מיועד לילדים מתחת לגיל 18. איננו אוספים במכוון מידע מילדים.</p>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">10. שינויים במדיניות</h2>
+                    <p>אנו שומרים לעצמנו את הזכות לעדכן מדיניות זו מעת לעת. שינויים מהותיים יפורסמו באתר.</p>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-semibold text-blue-700 mb-4">11. יצירת קשר</h2>
+                    <p>לשאלות או בקשות בנוגע למדיניות הפרטיות, ניתן לפנות אלינו:</p>
+                    <ul class="list-none mt-4">
+                        <li>📧 אימייל: <a href="mailto:privacy@xn--5dbaiub9efbhvf.xyz" class="text-blue-600 hover:underline">privacy@בקרהתקציבית.xyz</a></li>
+                        <li>📱 טלפון: <a href="tel:+972501234567" class="text-blue-600 hover:underline">050-123-4567</a></li>
+                        <li>📍 כתובת: תל אביב, ישראל</li>
+                    </ul>
+                </section>
+                
+                <div class="mt-12 p-6 bg-blue-50 rounded-lg">
+                    <p class="text-center text-gray-700">
+                        מדיניות פרטיות זו תקפה החל מתאריך 28 במאי 2024
+                    </p>
+                </div>
+            </div>
+        </article>
+    </main>
+    
+    <!-- Include footer partial -->
+    <% include('./partials/footer') %>
+</body>
+</html>

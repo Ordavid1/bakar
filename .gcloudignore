@@ -1,0 +1,81 @@
+# .gcloudignore - Files to ignore when deploying to Google Cloud
+# This helps speed up deployments by not uploading unnecessary files
+
+# Include .gitignore rules
+#!include:.gitignore
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+cloudbuild.yaml
+.gitlab-ci.yml
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment files
+.env
+.env.*
+env.yaml
+.env.yaml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tests
+test/
+tests/
+coverage/
+*.test.js
+*.spec.js
+
+# Development
+.eslintrc*
+.prettierrc*
+jest.config.js
+tsconfig.json
+webpack.config.js
+
+# Documentation
+README.md
+docs/
+*.md
+
+# Temporary
+tmp/
+temp/
+*.tmp
+*.log
+
+# Local scripts
+local-scripts/
+deploy-local.sh
+create-secrets.sh
+check-secrets.sh
+
+# Build artifacts
+dist/
+build/
+
+# Backup files
+*.backup
+*.bak
+
+# Keep these files
+!package.json
+!package-lock.json
+!server.js
+!views/
+!public/

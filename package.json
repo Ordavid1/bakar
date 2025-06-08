@@ -1,19 +1,47 @@
 {
-  "name": "bakar",
-  "version": "1.0.0",
+  "name": "bakar-seo-optimized",
+  "version": "2.0.0",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "postcss public/css/input.css -o public/css/output.css && cleancss -o public/css/output.min.css public/css/output.css",
+    "build:js": "terser public/js/main.js -o public/js/main.min.js && terser public/js/performance-optimizations.js -o public/js/performance-optimizations.min.js",
+    "start:prod": "NODE_ENV=production node server.js",
+    "minify": "terser public/js/main.js -o public/js/main.min.js && cleancss -o public/css/output.min.css public/css/output.css"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "real-estate",
+    "budget-control",
+    "project-management",
+    "hebrew",
+    "israel"
+  ],
+  "author": "Budget Control Guide",
   "license": "ISC",
-  "description": "",
+  "description": "Comprehensive guide for budget control in real estate projects - SEO optimized",
   "dependencies": {
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "helmet": "^7.1.0",
     "nodemailer": "^7.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "terser": "^5.26.0",
+    "clean-css-cli": "^5.6.3",
+    "postcss": "^8.4.32",
+    "postcss-cli": "^11.0.0",
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }

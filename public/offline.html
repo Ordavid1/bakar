@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אין חיבור לאינטרנט | בקרה תקציבית</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --text-primary: #1e293b;
+            --bg-primary: #f8fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .offline-container {
+            max-width: 600px;
+            background: white;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .offline-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            opacity: 0.8;
+        }
+        
+        h1 {
+            color: var(--primary-blue);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #64748b;
+        }
+        
+        .retry-button {
+            display: inline-block;
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .retry-button:hover {
+            background-color: #1e3a8a;
+        }
+        
+        .cached-pages {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .cached-pages h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+        }
+        
+        .cached-pages ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .cached-pages li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .cached-pages a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        
+        .cached-pages a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <svg class="offline-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" 
+                  stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 3l18 18" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        
+        <h1>אין חיבור לאינטרנט</h1>
+        <p>נראה שאין לך חיבור לאינטרנט כרגע. בדוק את החיבור שלך ונסה שוב.</p>
+        
+        <button onclick="window.location.reload()" class="retry-button">
+            נסה שוב
+        </button>
+        
+        <div class="cached-pages">
+            <h2>דפים זמינים במצב לא מקוון:</h2>
+            <ul>
+                <li><a href="/">דף הבית</a></li>
+                <li><a href="/#introduction">מבוא לבקרה תקציבית</a></li>
+                <li><a href="/#controller-role">תפקיד הבקר</a></li>
+                <li><a href="/#faq">שאלות נפוצות</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Check for connection periodically
+        setInterval(() => {
+            fetch('/').then(() => {
+                // Connection restored
+                window.location.reload();
+            }).catch(() => {
+                // Still offline
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

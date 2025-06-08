@@ -1,0 +1,4 @@
+// File: public/ads.txt (if using ads)
+# Ads.txt file for בקרהתקציבית.xyz
+# Updated: <%= new Date().toISOString() %>
+google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

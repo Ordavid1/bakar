@@ -1,0 +1,142 @@
+# .dockerignore - Optimize Docker build by excluding unnecessary files
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# Dependencies (will be installed fresh in container)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files - CRITICAL: Never include in image
+.env
+.env.*
+env.yaml
+.env.yaml
+secrets/
+credentials/
+
+# Development and test files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+test/
+tests/
+spec/
+__tests__/
+*.test.js
+*.spec.js
+coverage/
+.nyc_output/
+.eslintrc*
+.prettierrc*
+.stylelintrc*
+jest.config.js
+tsconfig.json
+
+# Documentation
+README.md
+CONTRIBUTING.md
+CHANGELOG.md
+LICENSE
+docs/
+*.md
+!security.md
+
+# Build files
+dist/
+build/
+.cache/
+*.log
+logs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+azure-pipelines.yml
+cloudbuild.yaml
+Jenkinsfile
+bitbucket-pipelines.yml
+
+# Local development
+local-scripts/
+deploy-local.sh
+create-secrets.sh
+check-secrets.sh
+docker-compose.yml
+docker-compose.*.yml
+Makefile
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+.temp/
+.tmp/
+
+# OS files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Backup files
+*.backup
+*.bak
+backup/
+backups/
+
+# Google Cloud specific
+.gcloudignore
+gcloud-service-key.json
+service-account-key.json
+*.serviceaccount.json
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.csr
+
+# PM2
+.pm2/
+ecosystem.config.js
+
+# Webpack
+webpack.config.js
+.webpack/
+
+# TypeScript
+*.tsbuildinfo
+
+# Minified files (will be generated in build)
+*.min.js
+*.min.css
+
+# Don't ignore these Docker-related files
+!Dockerfile
+!.dockerignore

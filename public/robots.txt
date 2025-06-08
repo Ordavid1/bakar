@@ -1,6 +1,92 @@
-# public/robots.txt
+# robots.txt for https://www.xn--5dbaiub9efbhvf.xyz
+# Last updated: <%= new Date().toISOString() %>
+
+# Default - Allow all crawlers
 User-agent: *
 Allow: /
-Disallow: /send-chat-form # Don't crawl the form submission endpoint
+Disallow: /send-chat-form
+Disallow: /newsletter-signup
+Disallow: /api/
+Disallow: /admin/
+Disallow: /tmp/
+Disallow: /*.json$
+Disallow: /*?print
+Disallow: /*?utm_
+Crawl-delay: 1
 
+# Googlebot
+User-agent: Googlebot
+Allow: /
+Disallow: /send-chat-form
+Disallow: /api/
+Crawl-delay: 0
+
+# Googlebot Images
+User-agent: Googlebot-Image
+Allow: /
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.webp$
+Allow: /*.svg$
+
+# Bingbot
+User-agent: Bingbot
+Allow: /
+Disallow: /send-chat-form
+Disallow: /api/
+Crawl-delay: 1
+
+# Yandex
+User-agent: Yandex
+Allow: /
+Disallow: /send-chat-form
+Disallow: /api/
+Crawl-delay: 2
+
+# Facebook
+User-agent: facebookexternalhit
+Allow: /
+Crawl-delay: 0
+
+# Twitter
+User-agent: Twitterbot
+Allow: /
+Crawl-delay: 0
+
+# LinkedIn
+User-agent: LinkedInBot
+Allow: /
+Crawl-delay: 0
+
+# WhatsApp
+User-agent: WhatsApp
+Allow: /
+Crawl-delay: 0
+
+# AhrefsBot - Limit crawling
+User-agent: AhrefsBot
+Crawl-delay: 10
+Visit-time: 0200-0400
+
+# SEMrushBot - Limit crawling
+User-agent: SemrushBot
+Crawl-delay: 10
+
+# Aggressive crawlers - Block
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: Dotbot
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+# Sitemaps
 Sitemap: https://www.xn--5dbaiub9efbhvf.xyz/sitemap.xml
+Sitemap: https://www.בקרהתקציבית.xyz/sitemap.xml
+
+# Host directive (for Yandex)
+Host: https://www.xn--5dbaiub9efbhvf.xyz

@@ -1,0 +1,15 @@
+// File: public/humans.txt
+/* TEAM */
+Role: Budget Control Expert
+Site: בקרהתקציבית.xyz
+Location: Tel Aviv, Israel
+
+/* THANKS */
+Framework: Express.js, EJS
+Tools: Node.js, Tailwind CSS, Chart.js
+
+/* SITE */
+Last update: <%= new Date().toISOString() %>
+Language: Hebrew
+Doctype: HTML5
+IDE: Visual Studio Code

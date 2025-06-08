@@ -1,3 +1,181 @@
-node_modules
+# .gitignore - Comprehensive for SEO-optimized Node.js project
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment variables - NEVER commit these!
 .env
+.env.local
+.env.production
+.env.development
+.env.test
+.env.*.local
+env.yaml
+.env.yaml
+
+# IDE and OS
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Build outputs
+dist/
+build/
+.cache/
+.parcel-cache/
+.next/
+out/
+.nuxt/
+
+# Logs
+logs/
+*.log
+log.txt
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+.temp/
+.tmp/
+
+# SSL certificates (for local development)
+*.pem
+*.key
+*.crt
+*.csr
+localhost.crt
+localhost.key
+
+# Google Cloud
+.gcloudignore
+gcloud-service-key.json
+service-account-key.json
+keyfile.json
+*.serviceaccount.json
+
+# Secrets and credentials
+secrets/
+credentials/
+*.p12
+*.pfx
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+data/
+
+# Uploaded files (if storing locally)
+uploads/
+public/uploads/
+
+# Mac specific
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux specific
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# PM2
+.pm2/
+pm2.log
+pm2.pid
+
+# Webpack
+.webpack/
+webpack-stats.json
+
+# Minified files (if generating locally)
+*.min.js
+*.min.css
+public/css/output.css
+public/css/output.min.css
+public/js/main.min.js
+public/js/performance-optimizations.min.js
+
+# Local scripts
+local-scripts/
+deploy-local.sh
+create-secrets.sh
+check-secrets.sh
+
+# Backup files
+*.backup
+*.bak
+backup/
+backups/
+
+# Cache directories
+.eslintcache
+.stylelintcache
+.sass-cache/
+
+# Terraform (if using)
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Don't ignore these important files
+!.gitignore
+!.dockerignore
+!.gcloudignore
+!robots.txt
+!humans.txt
+!security.txt
+!site.webmanifest
+!browserconf

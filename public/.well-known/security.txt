@@ -1,0 +1,20 @@
+# public/.well-known/security.txt
+# Security contact information for בקרה תקציבית
+
+Contact: mailto:security@xn--5dbaiub9efbhvf.xyz
+Contact: mailto:ordavidone@gmail.com
+Expires: 2026-06-08T00:00:00.000Z
+Preferred-Languages: he, en
+Canonical: https://www.xn--5dbaiub9efbhvf.xyz/.well-known/security.txt
+
+# Vulnerability Disclosure Policy
+Policy: https://www.xn--5dbaiub9efbhvf.xyz/security-policy
+
+# Our PGP key (if you have one)
+# Encryption: https://www.xn--5dbaiub9efbhvf.xyz/pgp-key.txt
+
+# Acknowledgments
+Acknowledgments: https://www.xn--5dbaiub9efbhvf.xyz/security-acknowledgments
+
+# Hiring
+# Hiring: https://www.xn--5dbaiub9efbhvf.xyz/careers
