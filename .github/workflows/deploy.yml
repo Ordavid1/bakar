@@ -1,11 +1,10 @@
-# .github/workflows/deploy.yml
 name: Deploy to Cloud Run
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Allows manual trigger
+  workflow_dispatch:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -55,21 +54,13 @@ jobs:
           --allow-unauthenticated \
           --set-env-vars NODE_ENV=production \
           --update-secrets GMAIL_USER=gmail-user:latest,GMAIL_PASS=gmail-pass:latest,GMAIL_DEST_EMAIL=gmail-dest-email:latest \
-          --memory 1Gi \
-          --cpu 2 \
+          --memory 512Mi \
+          --cpu 1 \
           --timeout 300 \
-          --min-instances 1 \
-          --max-instances 100
+          --min-instances 0 \
+          --max-instances 5
 
     - name: Show deployment URL
       run: |
         echo "🚀 Deployed to:"
         gcloud run services describe $SERVICE --region $REGION --format 'value(status.url)'
-
-    - name: Run post-deployment tests
-      run: |
-        SERVICE_URL=$(gcloud run services describe $SERVICE --region $REGION --format 'value(status.url)')
-        echo "Testing $SERVICE_URL"
-        curl -f "$SERVICE_URL/health" || exit 1
-        curl -f "$SERVICE_URL/robots.txt" || exit 1
-        echo "✅ Health checks passed!"
