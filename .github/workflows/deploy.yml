@@ -1,34 +1,51 @@
+# .github/workflows/deploy.yml
 name: Deploy to Cloud Run
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual trigger
 
 env:
-  PROJECT_ID: vaulted-bivouac-417511
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   SERVICE: bakar
   REGION: europe-west1
 
 jobs:
   deploy:
+    name: Deploy to Cloud Run
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
 
     - name: Google Auth
-      uses: google-github-actions/auth@v1
+      id: auth
+      uses: google-github-actions/auth@v2
       with:
-        credentials_json: '${{ secrets.GCP_SA_KEY }}'
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
 
     - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        version: 'latest'
 
-    - name: Build and Push Container
+    - name: Configure Docker for GCR
       run: |
-        gcloud builds submit --tag gcr.io/$PROJECT_ID/$SERVICE:$GITHUB_SHA
-        
+        gcloud auth configure-docker
+
+    - name: Build Docker image
+      run: |
+        docker build -t gcr.io/$PROJECT_ID/$SERVICE:$GITHUB_SHA .
+        docker build -t gcr.io/$PROJECT_ID/$SERVICE:latest .
+
+    - name: Push Docker image to GCR
+      run: |
+        docker push gcr.io/$PROJECT_ID/$SERVICE:$GITHUB_SHA
+        docker push gcr.io/$PROJECT_ID/$SERVICE:latest
+
     - name: Deploy to Cloud Run
       run: |
         gcloud run deploy $SERVICE \
@@ -37,4 +54,22 @@ jobs:
           --region $REGION \
           --allow-unauthenticated \
           --set-env-vars NODE_ENV=production \
-          --memory 512Mi
+          --update-secrets GMAIL_USER=gmail-user:latest,GMAIL_PASS=gmail-pass:latest,GMAIL_DEST_EMAIL=gmail-dest-email:latest \
+          --memory 1Gi \
+          --cpu 2 \
+          --timeout 300 \
+          --min-instances 1 \
+          --max-instances 100
+
+    - name: Show deployment URL
+      run: |
+        echo "🚀 Deployed to:"
+        gcloud run services describe $SERVICE --region $REGION --format 'value(status.url)'
+
+    - name: Run post-deployment tests
+      run: |
+        SERVICE_URL=$(gcloud run services describe $SERVICE --region $REGION --format 'value(status.url)')
+        echo "Testing $SERVICE_URL"
+        curl -f "$SERVICE_URL/health" || exit 1
+        curl -f "$SERVICE_URL/robots.txt" || exit 1
+        echo "✅ Health checks passed!"
